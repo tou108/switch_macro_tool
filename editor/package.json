@@ -30,6 +30,7 @@
         "appId": "com.tou108.switchmacrotool",
         "productName": "Switch Macro Tool",
         "copyright": "Copyright © 2025 tou108",
+        "publish": "never",
         "directories": {
             "output": "dist-electron"
         },
@@ -42,17 +43,14 @@
             "target": [
                 { "target": "nsis", "arch": ["x64"] },
                 { "target": "portable", "arch": ["x64"] }
-            ],
-            "icon": "assets/icon.ico"
+            ]
         },
         "mac": {
             "target": "dmg",
-            "icon": "assets/icon.icns",
             "category": "public.app-category.utilities"
         },
         "linux": {
             "target": "AppImage",
-            "icon": "assets/icon.png",
             "category": "Utility"
         },
         "nsis": {
