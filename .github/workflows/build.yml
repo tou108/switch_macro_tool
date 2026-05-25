@@ -1,0 +1,39 @@
+name: Build Electron App
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: editor
+        run: npm install
+      - name: Build (Windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: editor
+        run: npm run electron:build:win
+      - name: Build (macOS)
+        if: matrix.os == 'macos-latest'
+        working-directory: editor
+        run: npm run electron:build:mac
+      - name: Build (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: editor
+        run: npm run electron:build:linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: |
+            editor/dist-electron/*.exe
+            editor/dist-electron/*.dmg
+            editor/dist-electron/*.AppImage
+          if-no-files-found: warn
