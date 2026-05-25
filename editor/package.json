@@ -4,6 +4,10 @@
     "version": "1.0.0",
     "type": "module",
     "main": "electron/main.cjs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/tou108/switch_macro_tool"
+    },
     "scripts": {
         "dev": "vite",
         "build": "vite build",
