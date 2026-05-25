@@ -30,7 +30,6 @@
         "appId": "com.tou108.switchmacrotool",
         "productName": "Switch Macro Tool",
         "copyright": "Copyright © 2025 tou108",
-        "publish": "never",
         "directories": {
             "output": "dist-electron"
         },
