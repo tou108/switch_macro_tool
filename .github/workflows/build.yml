@@ -4,36 +4,42 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  build-windows:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install dependencies
+      - name: Install and Build
         working-directory: editor
-        run: npm install
-      - name: Build (Windows)
-        if: matrix.os == 'windows-latest'
-        working-directory: editor
-        run: npm run electron:build:win
-      - name: Build (macOS)
-        if: matrix.os == 'macos-latest'
-        working-directory: editor
-        run: npm run electron:build:mac
-      - name: Build (Linux)
-        if: matrix.os == 'ubuntu-latest'
-        working-directory: editor
-        run: npm run electron:build:linux
+        shell: pwsh
+        run: |
+          $env:CI = "false"
+          npm install --no-fund --no-audit
+          npm run electron:build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v4
         with:
-          name: dist-${{ matrix.os }}
-          path: |
-            editor/dist-electron/*.exe
-            editor/dist-electron/*.dmg
-            editor/dist-electron/*.AppImage
+          name: dist-windows
+          path: editor/dist-electron/*.exe
+          if-no-files-found: warn
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install --no-fund --no-audit
+        working-directory: editor
+      - run: npm run electron:build:linux
+        working-directory: editor
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-linux
+          path: editor/dist-electron/*.AppImage
           if-no-files-found: warn
