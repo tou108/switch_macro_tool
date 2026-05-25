@@ -1,0 +1,66 @@
+{
+    "name": "switch-macro-tool",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "main": "electron/main.js",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "electron:dev": "NODE_ENV=development electron .",
+        "electron:build:win": "vite build && electron-builder --win --x64",
+        "electron:build:mac": "vite build && electron-builder --mac",
+        "electron:build:linux": "vite build && electron-builder --linux"
+    },
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "lucide-react": "^0.263.1"
+    },
+    "devDependencies": {
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@vitejs/plugin-react": "^4.0.3",
+        "vite": "^4.4.5",
+        "electron": "^31.0.0",
+        "electron-builder": "^24.13.3"
+    },
+    "build": {
+        "appId": "com.tou108.switchmacrotool",
+        "productName": "Switch Macro Tool",
+        "copyright": "Copyright © 2025 tou108",
+        "directories": {
+            "output": "dist-electron"
+        },
+        "files": [
+            "dist/**/*",
+            "electron/**/*",
+            "package.json"
+        ],
+        "win": {
+            "target": [
+                { "target": "nsis", "arch": ["x64"] },
+                { "target": "portable", "arch": ["x64"] }
+            ],
+            "icon": "assets/icon.ico"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "assets/icon.icns",
+            "category": "public.app-category.utilities"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "assets/icon.png",
+            "category": "Utility"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "installerLanguages": ["ja_JP", "en_US"],
+            "language": "1041"
+        }
+    }
+}
